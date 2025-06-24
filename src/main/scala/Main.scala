@@ -6,6 +6,9 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import scala.concurrent.Await
 import scala.concurrent.duration.*
+import lists.ListSolution.anyList
+import lists.ListSolution.RList
+import lists.ListSolution.RNil
 
 object Main extends App {
 
@@ -38,4 +41,20 @@ object Main extends App {
     case Failure(exception) => println("oops")
   }
   Await.result(users, 10.seconds)
+
+  println(anyList.toString)
+
+  println(anyList.apply(0))
+  println(anyList.apply(2))
+  //println(anyList.apply(90))
+  println()
+  println(anyList.lenght)
+  println()
+  println(anyList.reverse)
+  println()
+  println(RList.fromIter(1 to 10))
+  println()
+  println(anyList ++ anyList)
+  val anotherList: RList[Int] = 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: 7 :: 8 :: 9 :: RNil
+  println(anotherList.removeAt(1))
 }
