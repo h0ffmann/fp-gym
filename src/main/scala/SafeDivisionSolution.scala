@@ -1,6 +1,7 @@
 //M1: Safe division w Either
 
-import Solution.*
+import common.Solution
+import common.Solution.*
 import scala.annotation.tailrec
 
 case class SafeDivisionInput(dividend: Double, divisor: Double)

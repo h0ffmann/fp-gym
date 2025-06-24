@@ -1,5 +1,6 @@
 import scala.annotation.tailrec
-import Solution.*
+import common.Solution
+import common.Solution.*
 
 case class TwoSumInput(nums: Array[Int], target: Int)
 

@@ -1,5 +1,5 @@
 //E1: Character Frequency Counter
-import Solution.*
+import common.Solution
 
 object CharFrequencySolution extends Solution[String, Map[Char, Int]] {
 

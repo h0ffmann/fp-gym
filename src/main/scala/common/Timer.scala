@@ -1,3 +1,5 @@
+package common
+
 object Timer {
     import scala.util.Random
 

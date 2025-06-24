@@ -1,3 +1,5 @@
+package common
+
 import Timer.timeIt
 
 object SolutionComparer {

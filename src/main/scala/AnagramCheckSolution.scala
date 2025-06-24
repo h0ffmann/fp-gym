@@ -1,6 +1,6 @@
 //E4: Anagram checker
 
-import Solution.*
+import common.Solution
 
 case class AnagramCheckerInput(word1: String, word2: String)
 

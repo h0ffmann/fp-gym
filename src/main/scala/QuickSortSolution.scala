@@ -1,4 +1,4 @@
-import Solution.*
+import common.Solution
 //import scala.annotation.tailrec
 
 

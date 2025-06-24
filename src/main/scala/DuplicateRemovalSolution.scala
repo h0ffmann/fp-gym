@@ -1,6 +1,6 @@
 //E3: Deduplication from list
 
-import Solution.*
+import common.Solution
 import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 

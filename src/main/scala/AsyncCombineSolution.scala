@@ -1,6 +1,6 @@
 //M3: Parser Configuration
 
-import Solution.*
+import common.Solution
 import scala.annotation.tailrec
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext

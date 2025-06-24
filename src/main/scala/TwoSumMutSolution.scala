@@ -1,4 +1,4 @@
-import Solution.*
+import common.Solution
 //import TwoSumSolution.TwoSumInput
 import scala.util.boundary, boundary.break
 

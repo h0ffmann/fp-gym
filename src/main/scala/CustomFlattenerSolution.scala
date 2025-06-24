@@ -1,6 +1,6 @@
 //E2: List Flattener
 
-import Solution.*
+import common.Solution
 
 class CustomFlattenerSolution[T] extends Solution[List[List[T]], List[T]] {
 

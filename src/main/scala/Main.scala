@@ -1,5 +1,5 @@
-import Solution.*
-import SolutionComparer.compareAlgorithms
+import common.Solution
+import common.SolutionComparer.compareAlgorithms
 import scala.util.Success
 import scala.util.Failure
 import scala.concurrent.ExecutionContext
@@ -9,6 +9,9 @@ import scala.concurrent.duration.*
 import lists.ListSolution.anyList
 import lists.ListSolution.RList
 import lists.ListSolution.RNil
+import lists.map
+import lists.flatMap
+import lists.filter
 
 object Main extends App {
 
@@ -57,4 +60,11 @@ object Main extends App {
   println(anyList ++ anyList)
   val anotherList: RList[Int] = 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: 7 :: 8 :: 9 :: RNil
   println(anotherList.removeAt(1))
+  println()
+  println(anotherList.map(_ * 2))
+  println()
+  println(anotherList.flatMap(x => x :: (x*x) :: RNil))
+  println()
+  println(anotherList.filter(_ % 2 == 0))
+
 }

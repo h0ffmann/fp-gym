@@ -1,3 +1,5 @@
+package common
+
 object Solution {
   sealed trait SolutionError
   case object NoPossibleSolution extends SolutionError

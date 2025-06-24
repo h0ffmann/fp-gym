@@ -1,6 +1,6 @@
 //E5: Factorial
 
-import Solution.*
+import common.Solution
 import scala.annotation.tailrec
 
 object FactorialSolution extends Solution[Int, BigInt] {

@@ -1,6 +1,6 @@
 //E6: Fibonacci
 
-import Solution.*
+import common.Solution
 import scala.annotation.tailrec
 
 object FibonacciSolution extends Solution[Int, BigInt] {

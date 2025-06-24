@@ -1,6 +1,6 @@
 //M2: Parser Configuration
 
-import Solution.*
+import common.Solution
 import scala.annotation.tailrec
 
 case class Config(host: String, port: Int)
