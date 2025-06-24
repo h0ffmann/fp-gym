@@ -1,5 +1,11 @@
 import Solution.*
 import SolutionComparer.compareAlgorithms
+import scala.util.Success
+import scala.util.Failure
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+import scala.concurrent.Await
+import scala.concurrent.duration.*
 
 object Main extends App {
 
@@ -21,4 +27,15 @@ object Main extends App {
     "listbuffer + tailrec",
     "distinct built-in"
   )
+
+  println("="*50)
+
+  given ExecutionContext = scala.concurrent.ExecutionContext.global
+  val users = ParAsyncCombineRecoverSolution(List(1,2,3,4,5,-50,6,7,8,-1,-3,9,10))
+
+  users.onComplete{
+    case Success(value) => println(s"Completed ${value.length}")
+    case Failure(exception) => println("oops")
+  }
+  Await.result(users, 10.seconds)
 }
