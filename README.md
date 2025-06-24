@@ -1,7 +1,3 @@
-Here is the single markdown file containing the generated `README.md` based on your project's structure and your request.
-
-***
-
 # FP-Gym: A Scala 3 Functional Programming Playground
 
 [![CI](https://github.com/h0ffmann/fp-gym/actions/workflows/test.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/test.yml)
