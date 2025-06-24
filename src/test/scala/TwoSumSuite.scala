@@ -1,13 +1,16 @@
 import munit.FunSuite
 
-import Solution.*
+import common.Solution
+import common.Solution.*
 
 class TwoSumSuite extends FunSuite {
 
-  test("TwoSumSolution should return the correct indices for a valid solution") {
+  test(
+    "TwoSumSolution should return the correct indices for a valid solution"
+  ) {
     val nums = Array(2, 7, 11, 15)
     val target = 9
-    
+
     val result = TwoSumSolution(nums, target)
     val resultMut = TwoSumMutSolution(nums, target)
     val expected = Array(0, 1)
@@ -17,14 +20,21 @@ class TwoSumSuite extends FunSuite {
     assertEquals(resultMut.toList, expected.toList, errorMsg)
   }
 
-  test("findTwoSum should return Left(NoPossibleSolution) when no pair sums to the target") {
-    val nums = Array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)
-    val target = 45 
-    
-    val result = TwoSumSolution.findTwoSum(nums.zipWithIndex.toList, Map.empty, target)
+  test(
+    "findTwoSum should return Left(NoPossibleSolution) when no pair sums to the target"
+  ) {
+    val nums = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+    val target = 45
+
+    val result =
+      TwoSumSolution.findTwoSum(nums.zipWithIndex.toList, Map.empty, target)
     val expected = Left(NoPossibleSolution)
-    
-    assertEquals(result, expected, "The function should have returned a NoPossibleSolution error.")
+
+    assertEquals(
+      result,
+      expected,
+      "The function should have returned a NoPossibleSolution error."
+    )
   }
 
   test("TwoSumSolution should handle an empty input array") {

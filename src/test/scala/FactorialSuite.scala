@@ -1,6 +1,6 @@
 import munit.FunSuite
 
-import Solution.*
+import common.Solution
 
 class FactorialSuite extends FunSuite {
 

@@ -9,7 +9,7 @@ import scala.concurrent.ExecutionContext
 case class Permission()
 case class User()
 object AsyncCombineSolution extends Solution[Int, Future[Permission]] {
-    
+
   given ExecutionContext = ExecutionContext.global
 
   def fetchUser(id: Int): Future[User] = ???

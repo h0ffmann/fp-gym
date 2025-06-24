@@ -7,13 +7,14 @@ import scala.annotation.tailrec
 case class SafeDivisionInput(dividend: Double, divisor: Double)
 type SafeDivisionOutput = Either[SolutionError, Double]
 
-object SafeDivisionSolution extends Solution[SafeDivisionInput, SafeDivisionOutput] {
+object SafeDivisionSolution
+    extends Solution[SafeDivisionInput, SafeDivisionOutput] {
 
   override def solve(input: SafeDivisionInput): SafeDivisionOutput = {
-    if(input.divisor == 0){
-        Left(DivisionZeroDivisor)
+    if (input.divisor == 0) {
+      Left(DivisionZeroDivisor)
     } else {
-        Right(input.dividend / input.divisor)
+      Right(input.dividend / input.divisor)
     }
   }
 

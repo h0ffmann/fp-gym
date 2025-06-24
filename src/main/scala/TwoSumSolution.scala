@@ -18,7 +18,11 @@ object TwoSumSolution extends Solution[TwoSumInput, Array[Int]] {
   }
 
   @tailrec
-  def findTwoSum(listWithIndices: List[(Int, Int)], seen: Map[Int,Int], target: Int): Either[SolutionError, Array[Int]] = {
+  def findTwoSum(
+      listWithIndices: List[(Int, Int)],
+      seen: Map[Int, Int],
+      target: Int
+  ): Either[SolutionError, Array[Int]] = {
     listWithIndices match {
       case Nil => Left(NoPossibleSolution)
       case (currentNum, currentIdx) :: next =>

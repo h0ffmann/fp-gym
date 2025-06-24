@@ -8,5 +8,15 @@ lazy val root = project
 
     scalaVersion := scala3Version,
 
+    // Compiler options
+    scalacOptions ++= Seq(
+      "-deprecation",
+      "-unchecked", 
+      "-feature"
+    ),
+    
+    // Scalafmt settings
+    scalafmtOnCompile := true,
+
     libraryDependencies += "org.scalameta" %% "munit" % "1.0.4" % Test
   )

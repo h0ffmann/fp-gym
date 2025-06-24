@@ -28,11 +28,12 @@ object CfgParserSolution extends Solution[Map[String, String], Option[Config]] {
     } yield Config(host, intPort)
   }
 
-
-  def solveWithTracking(input: Map[String, String]): Either[ConfigError, Config] = {
-    for { 
+  def solveWithTracking(
+      input: Map[String, String]
+  ): Either[ConfigError, Config] = {
+    for {
       host <- input.get("host").toRight(NoHost)
-      port <- input.get("port")toRight(NoPort)
+      port <- input.get("port") toRight (NoPort)
       intPort <- port.toIntOption.toRight(NoNumericalPort)
     } yield Config(host, intPort)
   }

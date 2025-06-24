@@ -4,7 +4,6 @@ import scala.annotation.tailrec
 
 object ListSolution {
 
-
   sealed abstract class RList[+T] {
     def head: T
     def tail: RList[T]
@@ -25,7 +24,7 @@ object ListSolution {
       def fromIterLoop(rem: Iterable[T], acc: RList[T]): RList[T] = {
         rem match {
           case x if x.isEmpty => acc
-          case z => fromIterLoop(z.tail, z.head :: acc)
+          case z              => fromIterLoop(z.tail, z.head :: acc)
         }
       }
       fromIterLoop(iter, RNil).reverse
@@ -47,7 +46,8 @@ object ListSolution {
 
     override def ++[S >: Nothing](anotherList: RList[S]): RList[S] = anotherList
 
-    override def removeAt(index: Int): RList[Nothing] = throw new NoSuchElementException
+    override def removeAt(index: Int): RList[Nothing] =
+      throw new NoSuchElementException
 
   }
 
@@ -102,33 +102,37 @@ object ListSolution {
       def reverseLoop(rem: RList[T], acc: RList[T]): RList[T] = { // acc RList
         rem match {
           case x if x.isEmpty => acc
-          case z              => reverseLoop(z.tail, z.head :: acc) // prepend always
+          case z => reverseLoop(z.tail, z.head :: acc) // prepend always
         }
       }
       reverseLoop(this, RNil)
     }
 
-    override def ++[S >: T](anotherList: RList[S]): RList[S] = { 
-        // O(n1+n2)
-        // n1 - first list, n2 - second list
-        @tailrec
-        def concatenationLoop(rem: RList[S], acc: RList[S]): RList[S] = {
-            rem match {
-                case x if x.isEmpty => acc
-                case z => concatenationLoop(z.tail, z.head :: acc)
-            }
+    override def ++[S >: T](anotherList: RList[S]): RList[S] = {
+      // O(n1+n2)
+      // n1 - first list, n2 - second list
+      @tailrec
+      def concatenationLoop(rem: RList[S], acc: RList[S]): RList[S] = {
+        rem match {
+          case x if x.isEmpty => acc
+          case z              => concatenationLoop(z.tail, z.head :: acc)
         }
+      }
 
-        concatenationLoop(this.reverse ,anotherList)
+      concatenationLoop(this.reverse, anotherList)
     }
 
-    override def removeAt(index: Int):  RList[T]  = { // O(N)
+    override def removeAt(index: Int): RList[T] = { // O(N)
       @tailrec
-      def removeLoop(rem: RList[T], accIdx: Int, accList: RList[T]):  RList[T]  = {
+      def removeLoop(
+          rem: RList[T],
+          accIdx: Int,
+          accList: RList[T]
+      ): RList[T] = {
         rem match {
-          case x if x.isEmpty => accList.reverse
-          case y if accIdx == index => removeLoop(y.tail, accIdx+1, accList)
-          case z => removeLoop(z.tail, accIdx+1, z.head :: accList)
+          case x if x.isEmpty       => accList.reverse
+          case y if accIdx == index => removeLoop(y.tail, accIdx + 1, accList)
+          case z => removeLoop(z.tail, accIdx + 1, z.head :: accList)
         }
       }
       if (index < 0) throw new NoSuchElementException

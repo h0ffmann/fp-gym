@@ -34,13 +34,15 @@ object Main extends App {
     "distinct built-in"
   )
 
-  println("="*50)
+  println("=" * 50)
 
   given ExecutionContext = scala.concurrent.ExecutionContext.global
-  val users = ParAsyncCombineRecoverSolution(List(1,2,3,4,5,-50,6,7,8,-1,-3,9,10))
+  val users = ParAsyncCombineRecoverSolution(
+    List(1, 2, 3, 4, 5, -50, 6, 7, 8, -1, -3, 9, 10)
+  )
 
-  users.onComplete{
-    case Success(value) => println(s"Completed ${value.length}")
+  users.onComplete {
+    case Success(value)     => println(s"Completed ${value.length}")
     case Failure(exception) => println("oops")
   }
   Await.result(users, 10.seconds)
@@ -49,7 +51,7 @@ object Main extends App {
 
   println(anyList.apply(0))
   println(anyList.apply(2))
-  //println(anyList.apply(90))
+  // println(anyList.apply(90))
   println()
   println(anyList.lenght)
   println()
@@ -58,12 +60,13 @@ object Main extends App {
   println(RList.fromIter(1 to 10))
   println()
   println(anyList ++ anyList)
-  val anotherList: RList[Int] = 1 :: 2 :: 3 :: 4 :: 5 :: 6 :: 7 :: 8 :: 9 :: RNil
+  val anotherList: RList[Int] =
+    1 :: 2 :: 3 :: 4 :: 5 :: 6 :: 7 :: 8 :: 9 :: RNil
   println(anotherList.removeAt(1))
   println()
   println(anotherList.map(_ * 2))
   println()
-  println(anotherList.flatMap(x => x :: (x*x) :: RNil))
+  println(anotherList.flatMap(x => x :: (x * x) :: RNil))
   println()
   println(anotherList.filter(_ % 2 == 0))
 

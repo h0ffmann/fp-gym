@@ -1,0 +1,81 @@
+# .github/workflows/ci.yml
+name: Test pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        java-version: [17]
+        scala-version: [3.7.1]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+        
+    - name: Cache SBT and dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.sbt
+          ~/.ivy2/cache
+          ~/.coursier/cache
+          target
+          project/target
+        key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt', 'project/build.properties', 'project/plugins.sbt') }}
+        restore-keys: |
+          ${{ runner.os }}-sbt-
+    
+    - name: Compile project
+      run: sbt compile
+      
+    - name: Compile tests
+      run: sbt Test/compile
+      
+    - name: Run all test suites
+      run: sbt test
+      
+    - name: Check code formatting
+      run: sbt scalafmtCheckAll
+      
+    - name: Run scalafmt if needed
+      if: failure()
+      run: |
+        sbt scalafmtAll
+        echo "❌ Code formatting issues found. Run 'sbt scalafmtAll' locally."
+        exit 1
+    
+    - name: Generate test report
+      run: sbt "testOnly * -- --reporter munit.HtmlReporter"
+      if: always()
+      
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-java-${{ matrix.java-version }}
+        path: |
+          target/test-reports/
+          target/test-results/
+          
+    - name: Test Summary
+      if: always()
+      run: |
+        if [ ${{ job.status }} == 'success' ]; then
+          echo "✅ All tests passed successfully!"
+        else
+          echo "❌ Some tests failed. Check the logs above."
+        fi

@@ -2,7 +2,6 @@ package lists
 
 import lists.ListSolution.RList
 import scala.annotation.tailrec
-import java.text.Bidi
 import lists.ListSolution.RNil
 
 extension [A](rl: RList[A]) // O(n*f)
@@ -16,7 +15,7 @@ extension [A](rl: RList[A]) // O(n*f)
     mapLoop(rl, RNil)
   }
 
-extension [A](rl: RList[A]) 
+extension [A](rl: RList[A])
   def flatMap[B](f: A => RList[B]): RList[B] = {
     @tailrec
     def fMapLoop(rem: RList[A], acc: RList[B]): RList[B] = {

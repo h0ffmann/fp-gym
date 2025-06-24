@@ -11,7 +11,6 @@ object AnagramCheckerSolution extends Solution[AnagramCheckerInput, Boolean] {
     val charMap2 = CharFrequencySolution(input.word2.toLowerCase)
     charMap1 == charMap2
   }
-  
 
   def apply(word1: String, word2: String): Boolean = {
     solve(AnagramCheckerInput(word1, word2))
