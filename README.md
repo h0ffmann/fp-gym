@@ -4,7 +4,7 @@ Here is the single markdown file containing the generated `README.md` based on y
 
 # FP-Gym: A Scala 3 Functional Programming Playground
 
-[![CI](https://github.com/your-username/your-repo/actions/workflows/test.yml/badge.svg)](https://github.com/your-username/your-repo/actions/workflows/test.yml)
+[![CI](https://github.com/h0ffmann/fp-gym/actions/workflows/test.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/test.yml)
 [![Scala Version](https://img.shields.io/badge/scala-3.7.1-blue.svg)](https://www.scala-lang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
