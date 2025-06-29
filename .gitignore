@@ -42,11 +42,11 @@ haskell/*.hi
 haskell/*.o
 haskell/.ghc.*
 
-# Python
-python/__pycache__/
-python/*.py[cod]
-python/*$py.class
-python/*.so
+# Python - all Python artifacts recursively within python directory
+python/**/__pycache__/
+python/**/*.py[cod]
+python/**/*$py.class
+python/**/*.so
 python/.Python
 python/build/
 python/develop-eggs/
@@ -61,7 +61,7 @@ python/sdist/
 python/var/
 python/wheels/
 python/share/python-wheels/
-python/*.egg-info/
+python/**/*.egg-info/
 python/.installed.cfg
 python/*.egg
 python/MANIFEST
@@ -95,3 +95,7 @@ python/dmypy.json
 
 # Linting
 python/.ruff_cache/
+
+# Type stubs
+python/**/*.pyc
+python/**/py.typed
