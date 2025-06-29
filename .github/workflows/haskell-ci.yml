@@ -8,7 +8,7 @@ on:
 
 env:
   # Cache key for Haskell dependencies
-  HASKELL_CACHE_KEY: ${{ runner.os }}-stack-${{ hashFiles('**/stack.yaml', '**/stack.yaml.lock', '**/*.cabal') }}
+  HASKELL_CACHE_KEY: ubuntu-latest-stack-${{ hashFiles('**/stack.yaml', '**/stack.yaml.lock', '**/*.cabal') }}
 
 jobs:
   # ============================================
