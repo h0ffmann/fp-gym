@@ -3,8 +3,14 @@ name: Haskell CI
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'haskell/**'
+      - '.github/workflows/haskell-ci.yml'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'haskell/**'
+      - '.github/workflows/haskell-ci.yml'
 
 jobs:
   # ============================================

@@ -1,0 +1,134 @@
+name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+        - 'python/**'
+        - '.github/workflows/python-ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+        - 'python/**'
+        - '.github/workflows/python-ci.yml'
+
+defaults:
+  run:
+    working-directory: python
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: ["3.13"]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install UV
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+
+    - name: Cache UV dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/uv
+          python/.venv
+        key: ${{ runner.os }}-uv-${{ hashFiles('python/pyproject.toml', 'python/uv.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-uv-
+    
+    - name: Install dependencies
+      run: |
+        uv sync --dev
+        
+    - name: Install project dependencies
+      run: |
+        uv add returns==0.25.0
+        uv add --dev pytest pytest-cov mypy ruff
+    
+    - name: Compile project
+      run: |
+        uv run python -m py_compile src/main.py
+        uv run python -m py_compile src/twosum/solver.py
+      
+    - name: Compile tests
+      run: |
+        uv run python -m py_compile tests/test_twosum.py
+      
+    - name: Run all test suites
+      run: |
+        uv run pytest --cov=src --cov-report=xml --cov-report=term-missing
+      
+    - name: Check code formatting
+      run: |
+        uv run ruff format --check .
+        
+    - name: Run ruff if needed
+      if: failure()
+      run: |
+        uv run ruff format .
+        echo "❌ Code formatting issues found. Run 'just format' locally."
+        exit 1
+        
+    - name: Run linting
+      run: |
+        uv run ruff check .
+    
+    - name: Run type checking
+      run: |
+        uv run mypy src/
+    
+    - name: Generate test report
+      run: |
+        uv run pytest --html=htmlcov/pytest_report.html --self-contained-html
+      if: always()
+      
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-python-${{ matrix.python-version }}
+        path: |
+          python/htmlcov/
+          python/coverage.xml
+          python/.coverage
+          python-status:
+            needs: [test]
+            if: always()
+            runs-on: ubuntu-latest
+            
+            name: Python CI Status
+            
+            steps:
+            - name: Check Python CI status
+              run: |
+                echo "📊 Python CI Results:"
+                echo "====================="
+                
+                if [ "${{ needs.test.result }}" == "success" ]; then
+                  echo "✅ Python tests: PASSED"
+                else
+                  echo "❌ Python tests: FAILED"
+                  OVERALL_FAILED=true
+                fi
+                
+                echo "====================="
+                
+                if [ "$OVERALL_FAILED" == "true" ]; then
+                  echo "❌ Python CI FAILED"
+                  exit 1
+                else
+                  echo "✅ Python CI PASSED"
+                  echo "🎉 All Python checks completed successfully!"
+                fi

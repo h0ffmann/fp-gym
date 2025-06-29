@@ -1,5 +1,6 @@
 # macOS
 .DS_Store
+.runtime/
 
 # sbt specific
 dist/*
@@ -40,3 +41,57 @@ haskell/cabal.project.local
 haskell/*.hi
 haskell/*.o
 haskell/.ghc.*
+
+# Python
+python/__pycache__/
+python/*.py[cod]
+python/*$py.class
+python/*.so
+python/.Python
+python/build/
+python/develop-eggs/
+python/dist/
+python/downloads/
+python/eggs/
+python/.eggs/
+python/lib/
+python/lib64/
+python/parts/
+python/sdist/
+python/var/
+python/wheels/
+python/share/python-wheels/
+python/*.egg-info/
+python/.installed.cfg
+python/*.egg
+python/MANIFEST
+
+# Virtual environments
+python/.env
+python/.venv
+python/env/
+python/venv/
+python/ENV/
+python/env.bak/
+python/venv.bak/
+
+# UV
+python/.uv/
+
+# Testing
+python/.pytest_cache/
+python/.coverage
+python/htmlcov/
+python/.tox/
+python/coverage.xml
+python/*.cover
+python/*.py,cover
+python/.hypothesis/
+
+# Type checking
+python/.mypy_cache/
+python/.dmypy.json
+python/dmypy.json
+
+# Linting
+python/.ruff_cache/

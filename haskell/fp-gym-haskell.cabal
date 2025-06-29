@@ -5,9 +5,9 @@ synopsis:            Functional Programming Gym - Haskell Solutions
 description:         A collection of algorithmic solutions implemented in modern Haskell
 homepage:            https://github.com/h0ffmann/fp-gym
 license:             MIT
-author:              Your Name
-maintainer:          your.email@example.com
-copyright:           2025 Your Name
+author:              Matheus Hoffmann
+maintainer:          hoffmann@poli.ufrj.br
+copyright:           2025 Matheus Hoffmann
 category:            Algorithms
 build-type:          Simple
 extra-source-files:  README.md

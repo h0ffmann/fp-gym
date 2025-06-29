@@ -1,0 +1,214 @@
+# Justfile for Python project automation
+
+set dotenv-load
+
+# Default recipe to display available commands
+default:
+    @just --list
+
+# 3.13 support on nix using flakes + FHS
+nix-pydev:
+    devshell
+    python-dev
+
+# Install dependencies and set up development environment
+setup:
+    uv sync --dev
+    @echo "✅ Development environment ready!"
+
+# Create and activate virtual environment
+venv:
+    uv venv --python 3.13
+    @echo "📦 Virtual environment created. Activate with: source .venv/bin/activate"
+
+# Install dependencies
+install:
+    uv add returns==0.25.0
+    uv add --dev pytest pytest-cov mypy ruff hypothesis
+
+# Run all tests (unit + property tests)
+test:
+    uv run pytest
+
+# Run only unit tests (exclude property tests)
+test-unit:
+    uv run pytest tests/test_twosum.py -v
+
+# Run only property-based tests
+test-property:
+    uv run pytest tests/test_property_twosum.py -v
+
+# Run property tests with detailed statistics
+test-property-verbose:
+    uv run pytest tests/test_property_twosum.py -v --hypothesis-show-statistics
+
+# Run property tests with more examples (thorough testing)
+test-property-thorough:
+    uv run pytest tests/test_property_twosum.py -v --hypothesis-show-statistics --hypothesis-max-examples=500
+
+# Run property tests with specific number of examples
+test-property-examples examples="1000":
+    uv run pytest tests/test_property_twosum.py -v -s --hypothesis-max-examples={{examples}}
+
+# Run specific property test class
+test-property-class classname:
+    uv run pytest tests/test_property_twosum.py::{{classname}} -v
+
+# Run specific property test method
+test-property-method method:
+    uv run pytest tests/test_property_twosum.py::{{method}} -v
+
+# Run tests with coverage
+test-cov:
+    uv run pytest --cov=src --cov-report=term-missing
+
+# Run tests with coverage including property tests
+test-cov-all:
+    uv run pytest --cov=src --cov-report=term-missing --cov-report=html
+
+# Find minimal failing examples (when a property test fails)
+test-property-minimal:
+    uv run pytest tests/test_property_twosum.py -v --hypothesis-show-statistics --tb=short
+
+# Run property tests in quiet mode (less verbose)
+test-property-quiet:
+    uv run pytest tests/test_property_twosum.py -q
+
+# Profile property tests to find slow ones
+test-property-profile:
+    uv run pytest tests/test_property_twosum.py --hypothesis-profile
+
+# Run robustness tests specifically
+test-robustness:
+    uv run pytest tests/test_property_twosum.py::TestTwoSumRobustness -v
+
+# Run performance tests specifically
+test-performance:
+    uv run pytest tests/test_property_twosum.py::TestTwoSumPerformanceProperties -v
+
+# Run core property tests only
+test-property-core:
+    uv run pytest tests/test_property_twosum.py::TestTwoSumProperties -v
+
+# Run result property tests only
+test-property-result:
+    uv run pytest tests/test_property_twosum.py::TestTwoSumResultProperties -v
+
+# Run linting
+lint:
+    uv run ruff check .
+
+# Fix linting issues
+lint-fix:
+    uv run ruff check --fix .
+
+# Format code
+format:
+    uv run ruff format .
+
+# Run type checking (simple approach - check specific files)
+typecheck:
+    uv run --no-project mypy src/fp_gym/solver.py src/fp_gym/__init__.py src/main.py
+
+# Alternative typecheck from src directory 
+typecheck-alt:
+    cd src && uv run --no-project mypy fp_gym/ main.py
+
+# Run type checking on specific file
+typecheck-file file:
+    uv run --no-project mypy {{file}}
+
+# Run all quality checks
+check: lint typecheck test-unit
+
+# Run extended quality checks including property tests
+check-extended: lint typecheck test-cov-all
+
+# Run quick validation (fast checks)
+check-quick: lint typecheck test-unit test-property-quiet
+
+# Clean build artifacts and cache
+clean:
+    rm -rf .pytest_cache/
+    rm -rf .mypy_cache/
+    rm -rf .ruff_cache/
+    rm -rf htmlcov/
+    rm -rf dist/
+    rm -rf *.egg-info/
+    rm -rf .hypothesis/
+    find . -type d -name __pycache__ -exec rm -rf {} +
+    find . -type f -name "*.pyc" -delete
+
+# Build the project
+build:
+    uv build
+
+# Run the main application
+run:
+    uv run python src/main.py
+
+# Run development server (if applicable)
+dev: setup
+    uv run python src/main.py
+
+# Install pre-commit hooks
+hooks:
+    @echo "Setting up git hooks..."
+    @echo "#!/bin/sh\njust check-extended" > .git/hooks/pre-commit
+    @chmod +x .git/hooks/pre-commit
+    @echo "✅ Pre-commit hook installed (includes property tests)"
+
+# Show project info
+info:
+    @echo "📊 Project Information:"
+    @echo "======================="
+    @uv --version
+    @python --version
+    @echo "Dependencies:"
+    @uv tree
+
+# Generate hypothesis statistics report
+hypothesis-stats:
+    uv run python -c "from hypothesis import settings; print('Current Hypothesis settings:'); print(f'max_examples: {settings().max_examples}'); print(f'deadline: {settings().deadline}'); print(f'database: {settings().database}')"
+
+# Reset hypothesis database (clear cached examples)
+hypothesis-reset:
+    rm -rf .hypothesis/
+    @echo "🔄 Hypothesis database reset"
+
+# Show hypothesis database info
+hypothesis-info:
+    @echo "📊 Hypothesis Database Information:"
+    @if [ -d .hypothesis ]; then echo "Database exists"; ls -la .hypothesis/; else echo "No database found"; fi
+
+# Run stress tests (property tests with many examples)
+stress-test:
+    @echo "🔥 Running stress tests with property-based testing..."
+    uv run pytest tests/test_property_twosum.py::TestTwoSumPerformanceProperties -v --hypothesis-max-examples=1000
+
+# Quick smoke test (fast property tests)
+smoke-test:
+    @echo "💨 Running quick smoke tests..."
+    uv run pytest tests/test_property_twosum.py -x --hypothesis-max-examples=50 -q
+
+# Debug failing property test
+debug-property test_name:
+    uv run pytest tests/test_property_twosum.py::{{test_name}} -vvv --hypothesis-show-statistics --tb=long --pdb
+
+# Run property tests with seed for reproducibility
+test-property-seed seed:
+    uv run pytest tests/test_property_twosum.py -v --hypothesis-seed={{seed}}
+
+# Continuous testing (re-run tests when files change) - requires pytest-watch
+test-watch:
+    uv run ptw tests/ src/ --runner "pytest tests/test_property_twosum.py -q"
+
+# Generate property test report
+test-property-report:
+    @echo "📊 Running comprehensive property test report..."
+    uv run pytest tests/test_property_twosum.py --hypothesis-show-statistics --tb=short -v > property_test_report.txt 2>&1
+    @echo "Report saved to property_test_report.txt"
+
+# Run a comprehensive test suite
+test-comprehensive: test-unit test-property-thorough
+    @echo "🎉 Comprehensive test suite completed!"

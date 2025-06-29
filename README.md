@@ -1,110 +1,155 @@
-# FP-Gym: A Scala 3 Functional Programming Playground
+# FP-Gym: A Multi-Language Functional Programming Playground
 
 [![Scala CI](https://github.com/h0ffmann/fp-gym/actions/workflows/scala-ci.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/scala-ci.yml)
 [![Haskell CI](https://github.com/h0ffmann/fp-gym/actions/workflows/haskell-ci.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/haskell-ci.yml)
+[![Python CI](https://github.com/h0ffmann/fp-gym/actions/workflows/python-ci.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/python-ci.yml)
 [![Scala Version](https://img.shields.io/badge/scala-3.7.1-blue.svg)](https://www.scala-lang.org/)
 [![GHC Version](https://img.shields.io/badge/ghc-9.8.6-purple.svg)](https://www.haskell.org/ghc/)
+[![Python Version](https://img.shields.io/badge/python-3.13-green.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Welcome to FP-Gym! This repository is a personal collection of solutions to common programming problems and data structure challenges, implemented with a functional-first approach using **Scala 3**. The goal is to practice and demonstrate core FP concepts like immutability, recursion, higher-order functions, and type safety.
+Welcome to FP-Gym! This repository is a personal collection of solutions to common programming problems and data structure challenges, implemented with a functional-first approach using **Scala 3**, **Haskell**, and **Python**. The goal is to practice and demonstrate core FP concepts like immutability, recursion, higher-order functions, and type safety across different paradigms.
 
 ## ✨ Key Features
 
-*   **Modern Scala 3:** Leverages new features like extension methods, enums, and simplified syntax.
-*   **Functional First:** Solutions prioritize immutability, pure functions, and recursion (especially tail recursion) over imperative loops and state mutation.
-*   **Custom Data Structures:** Includes a from-scratch implementation of a functional `RList` (recursive list) to demonstrate core principles.
-*   **Comprehensive Testing:** All solutions are verified with a robust test suite using **MUnit**.
-*   **CI/CD Pipeline:** Automated testing and formatting checks are run on every push and pull request using **GitHub Actions**.
-*   **Developer-Friendly:** Includes a `justfile` for easy access to common commands like `test`, `fmt`, and `run`.
+*   **Multi-Language Approach:** Solutions implemented in Scala 3, Haskell, and Python to compare functional programming approaches
+*   **Modern Scala 3:** Leverages new features like extension methods, enums, and simplified syntax
+*   **Haskell Purity:** Demonstrates pure functional programming with strong type safety
+*   **Python FP:** Shows functional programming concepts using generators, Maybe monads, and immutable patterns
+*   **Functional First:** Solutions prioritize immutability, pure functions, and recursion over imperative approaches
+*   **Custom Data Structures:** Includes from-scratch implementations of functional data structures
+*   **Comprehensive Testing:** All solutions verified with robust test suites (MUnit for Scala, HSpec/QuickCheck for Haskell, pytest/Hypothesis for Python)
+*   **Property-Based Testing:** Extensive use of property-based testing to ensure correctness
+*   **CI/CD Pipeline:** Automated testing and formatting checks for all languages
+*   **Developer-Friendly:** Includes justfiles for easy access to common commands
 
 ## 📚 Solved Problems
 
-This table provides an overview of the challenges solved in this repository, along with a brief description and direct links to the implementation and test files.
+This table provides an overview of the challenges solved in this repository across different languages.
 
-| Problem | Description | Implementation | Tests |
+| Problem | Description | Languages | Key Concepts |
 | :--- | :--- | :--- | :--- |
-| **Character Frequency** | Count the occurrences of each character in a string. | [Solution](src/main/scala/CharFrequencySolution.scala) | [Suite](src/test/scala/CharFrequencySuite.scala) |
-| **Anagram Checker** | Check if two strings are anagrams of each other. | [Solution](src/main/scala/AnagramCheckerSolution.scala) | [Suite](src/test/scala/CharFrequencySuite.scala#L46) |
-| **List Flattener** | Flatten a list of lists into a single list. | [Solution](src/main/scala/CustomFlattenerSolution.scala) | [Suite](src/test/scala/CustomFlattenerSuite.scala) |
-| **List Deduplication** | Remove duplicate elements from a list while preserving order. | [Solution](src/main/scala/DuplicateRemovalSolution.scala) | [Suite](src/test/scala/DuplicateRemovalSuite.scala) |
-| **Factorial** | Calculate the factorial of a number using tail recursion and `BigInt`. | [Solution](src/main/scala/FactorialSolution.scala) | [Suite](src/test/scala/FactorialSuite.scala) |
-| **Fibonacci** | Generate the Nth Fibonacci number using tail recursion. | [Solution](src/main/scala/FibonacciSolution.scala) | _N/A_ |
-| **Two Sum** | Find two numbers in an array that sum up to a specific target. | [FP](src/main/scala/TwoSumSolution.scala) / [Mutable](src/main/scala/TwoSumMutSolution.scala) | [Suite](src/test/scala/TwoSumSuite.scala) |
-| **Quick Sort** | Sort an array of integers using the QuickSort algorithm. | [Solution](src/main/scala/QuickSortSolution.scala) | [Suite](src/test/scala/SortingSuite.scala) |
-| **Safe Division** | Perform division that safely handles division-by-zero using `Either`. | [Solution](src/main/scala/SafeDivisionSolution.scala) | _N/A_ |
-| **Config Parser** | Safely parse a `Map` into a `Config` case class using `Option` and `Either`. | [Solution](src/main/scala/CfgParserSolution.scala) | _N/A_ |
-| **Async Operations** | Chain and combine `Future`s, including parallel execution and error recovery. | [Chain](src/main/scala/AsyncCombineSolution.scala) / [Parallel](src/main/scala/ParAsyncCombineSolution.scala) / [Recover](src/main/scala/ParAsyncCombineRecoverSolution.scala) | _N/A_ |
+| **Character Frequency** | Count occurrences of each character in a string | Scala | `groupMapReduce`, functional transformations |
+| **Anagram Checker** | Check if two strings are anagrams | Scala | Character frequency analysis, case handling |
+| **List Flattener** | Flatten nested lists into a single list | Scala | `foldLeft`, list concatenation |
+| **List Deduplication** | Remove duplicates while preserving order | Scala | Tail recursion, mutable vs immutable approaches |
+| **Factorial** | Calculate factorial using tail recursion | Scala | Tail recursion, `BigInt` for large numbers |
+| **Fibonacci** | Generate Nth Fibonacci number | Scala | Tail recursion optimization |
+| **Two Sum** | Find two numbers that sum to target | Scala, Haskell, Python | Hash maps, generators, Maybe/Either monads |
+| **Quick Sort** | Sort array using QuickSort algorithm | Scala | Recursive partitioning, functional approach |
+| **Safe Division** | Division with error handling | Scala | `Either` monad, error handling |
+| **Config Parser** | Parse configuration safely | Scala | `Option` and `Either` chaining, for-comprehensions |
+| **Async Operations** | Chain and combine Futures | Scala | `Future` composition, parallel execution, error recovery |
+| **Run-Length Encoding** | Compress consecutive duplicates | Scala | Pattern matching, tail recursion |
+
+## 🏗️ Project Structure
+
+```
+fp-gym/
+├── src/main/scala/           # Scala implementations
+├── src/test/scala/           # Scala tests (MUnit)
+├── haskell/                  # Haskell implementations
+│   ├── src/FpGym/           # Haskell source code
+│   ├── test/FpGym/          # Haskell tests (HSpec + QuickCheck)
+│   └── bench/FpGym/         # Haskell benchmarks
+├── python/                   # Python implementations
+│   ├── src/fp_gym/          # Python source code
+│   └── tests/               # Python tests (pytest + Hypothesis)
+└── .github/workflows/        # CI/CD pipelines
+```
 
 ## 🔗 Custom Data Structures
 
-A core part of this project is the implementation of fundamental data structures from scratch.
+A core part of this project is implementing fundamental data structures from scratch.
 
-| Data Structure | Description | Implementation |
+| Data Structure | Language | Description |
 | :--- | :--- | :--- |
-| **Recursive List (`RList`)** | A classic functional, singly-linked list (like `::` and `Nil`). | [Code](src/main/scala/lists/ListSolution.scala) |
-| **Higher-Order Functions** | `map`, `flatMap`, and `filter` implemented for `RList` via extension methods. | [Code](src/main/scala/lists/HOF.scala) |
-| **Run-Length Encoding** | An algorithm to compress consecutive duplicate elements in an `RList`. | [Code](src/main/scala/lists/RunLenghtEncoding.scala) |
+| **Recursive List (`RList`)** | Scala | Functional singly-linked list with custom operations |
+| **Higher-Order Functions** | Scala | `map`, `flatMap`, `filter` via extension methods |
+| **Vector-Based Solutions** | Haskell | Efficient array operations with Vector |
+| **Generator-Based Structures** | Python | Memory-efficient lazy evaluation with generators |
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-*   JDK 17 or later
-*   `sbt` (Simple Build Tool)
-*   (Optional) `just` for using the command aliases in `justfile`.
+*   **Scala:** JDK 17+, sbt
+*   **Haskell:** GHC 9.8+, Stack
+*   **Python:** Python 3.13+, uv (or pip)
+*   (Optional) `just` for command aliases
 
-### Setup
+### Quick Start
 
-1.  **Clone the repository:**
-    ```sh
-    git clone https://github.com/your-username/your-repo.git
-    cd fp-gym
-    ```
+Choose your language of interest:
 
-2.  **Compile the project:**
-    This will download all necessary dependencies.
-    ```sh
-    sbt compile
-    ```
+#### Scala
+```sh
+# Compile and test
+sbt compile
+sbt test
 
-### Common Commands
+# Or use justfile
+just test
+just fmt
+```
 
-The `justfile` provides convenient shortcuts for common tasks.
+#### Haskell
+```sh
+cd haskell
 
-*   **Run all tests:**
-    ```sh
-    just test
-    ```
+# Setup and test
+stack setup
+stack test
 
-*   **Check code formatting:**
-    ```sh
-    just fmt-check
-    ```
+# Or use justfile
+just test
+just docs
+```
 
-*   **Apply code formatting:**
-    ```sh
-    just fmt
-    ```
+#### Python
+```sh
+cd python
 
-*   **Run the full CI pipeline locally:**
-    ```sh
-    just ci
-    ```
+# Setup and test
+uv sync --dev
+uv run pytest
 
-*   **See all available commands:**
-    ```sh
-    just --list
-    ```
+# Or use justfile
+just test
+just test-property
+```
 
 ## ⚙️ CI/CD Pipeline
 
-The project is equipped with a CI pipeline defined in [`.github/workflows/test.yml`](.github/workflows/test.yml). It triggers on every `push` and `pull_request` to the `main` branch and performs the following steps:
-1.  Sets up JDK 17 and `sbt`.
-2.  Caches dependencies for faster subsequent runs.
-3.  Compiles the main and test source code.
-4.  Verifies code formatting with `sbt scalafmtCheckAll`.
-5.  Runs the entire MUnit test suite with `sbt test`.
-6.  Uploads test results as build artifacts.
+Each language has its own CI pipeline that runs on every push and pull request:
+
+*   **Scala CI:** Compilation, testing, formatting checks with sbt
+*   **Haskell CI:** Stack build, HSpec tests, Haddock documentation
+*   **Python CI:** Type checking, pytest, property-based testing with Hypothesis, code formatting with ruff
+
+All pipelines include:
+- Dependency caching for faster builds
+- Test result artifacts
+- Code quality checks
+- Cross-platform compatibility testing
+
+## 🧪 Testing Philosophy
+
+This project emphasizes thorough testing with multiple approaches:
+
+*   **Unit Tests:** Traditional example-based testing
+*   **Property-Based Testing:** Hypothesis (Python) and QuickCheck (Haskell) to discover edge cases
+*   **Performance Testing:** Benchmarks comparing different algorithmic approaches
+*   **Integration Testing:** End-to-end testing of complete solutions
+
+## 📊 Language Comparisons
+
+The multi-language approach allows for interesting comparisons:
+
+*   **Type Safety:** Haskell's compile-time guarantees vs Scala's balance vs Python's runtime checking
+*   **Performance:** Compiled (Scala/Haskell) vs interpreted (Python) trade-offs
+*   **Expressiveness:** Pattern matching, monadic composition, and functional idioms across languages
+*   **Ecosystem:** Different approaches to dependency management and tooling
 
 ## License
 
