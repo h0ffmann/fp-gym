@@ -60,7 +60,7 @@ jobs:
     - name: Compile project
       run: |
         uv run python -m py_compile src/main.py
-        uv run python -m py_compile src/twosum/solver.py
+        uv run python -m py_compile src/fp_gym/solver.py
       
     - name: Compile tests
       run: |
