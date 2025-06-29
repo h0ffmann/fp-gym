@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  # Cache key for Haskell dependencies
-  HASKELL_CACHE_KEY: ubuntu-latest-stack-${{ hashFiles('**/stack.yaml', '**/stack.yaml.lock', '**/*.cabal') }}
-
 jobs:
   # ============================================
   # HASKELL BUILD & TEST MATRIX
@@ -43,9 +39,10 @@ jobs:
         path: |
           ~/.stack
           haskell/.stack-work
-        key: ${{ env.HASKELL_CACHE_KEY }}-${{ matrix.ghc-version }}
+        key: ubuntu-latest-stack-${{ hashFiles('**/stack.yaml', '**/stack.yaml.lock', '**/*.cabal') }}-${{ matrix.ghc-version }}
         restore-keys: |
-          ${{ env.HASKELL_CACHE_KEY }}-
+          ubuntu-latest-stack-${{ hashFiles('**/stack.yaml', '**/stack.yaml.lock', '**/*.cabal') }}-
+          ubuntu-latest-stack-
           ${{ runner.os }}-stack-
 
     - name: Install system dependencies
@@ -108,7 +105,7 @@ jobs:
       run: |
         echo "📚 Generating documentation..."
         stack haddock --resolver ghc-${{ matrix.ghc-version }} || echo "⚠️ Documentation generation failed"
-      if: matrix.ghc-version == '9.6.6'  # Only generate docs for latest GHC
+      if: matrix.ghc-version == '9.8.4'  # Only generate docs for the GHC version we're using
       
     - name: Test executable
       working-directory: haskell
