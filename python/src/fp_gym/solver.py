@@ -29,17 +29,17 @@ class TwoSumResult:
 def two_sum_generator(nums: list[int], target: int) -> Generator[TwoSumResult]:
     """
     Generator-based two sum implementation for stack safety.
-    
+
     Yields all possible pairs that sum to the target value.
     Uses generators to maintain stack safety even with large datasets.
-    
+
     Args:
         nums: List of integers to search
         target: Target sum value
-        
+
     Yields:
         TwoSumResult: Contains indices and values of pairs that sum to target
-        
+
     Example:
         >>> nums = [2, 7, 11, 15]
         >>> target = 9
@@ -55,10 +55,7 @@ def two_sum_generator(nums: list[int], target: int) -> Generator[TwoSumResult]:
         if complement in seen:
             # Found a pair - yield the result
             j = seen[complement]
-            result = TwoSumResult(
-                indices=(j, i),
-                values=(complement, num)
-            )
+            result = TwoSumResult(indices=(j, i), values=(complement, num))
             yield result
 
         seen[num] = i
@@ -67,14 +64,14 @@ def two_sum_generator(nums: list[int], target: int) -> Generator[TwoSumResult]:
 def two_sum(nums: list[int], target: int) -> Maybe[TwoSumResult]:
     """
     Find the first pair of numbers that sum to target using Maybe monad.
-    
+
     Args:
         nums: List of integers to search
         target: Target sum value
-        
+
     Returns:
         Maybe[TwoSumResult]: Some(result) if found, Nothing if not found
-        
+
     Example:
         >>> nums = [2, 7, 11, 15]
         >>> result = two_sum(nums, 9)
@@ -92,7 +89,7 @@ def two_sum(nums: list[int], target: int) -> Maybe[TwoSumResult]:
 class TwoSumSolver:
     """
     Stack-safe two sum solver using generators and functional programming patterns.
-    
+
     This class provides multiple methods for solving the two sum problem,
     all using generator-based approaches for memory efficiency and stack safety.
     """
@@ -104,11 +101,11 @@ class TwoSumSolver:
     def find_all_pairs(self, nums: list[int], target: int) -> list[TwoSumResult]:
         """
         Find all pairs that sum to the target.
-        
+
         Args:
             nums: List of integers to search
             target: Target sum value
-            
+
         Returns:
             List of all TwoSumResult objects found
         """
@@ -117,11 +114,11 @@ class TwoSumSolver:
     def find_first_pair(self, nums: list[int], target: int) -> Maybe[TwoSumResult]:
         """
         Find the first pair that sums to the target.
-        
+
         Args:
             nums: List of integers to search
             target: Target sum value
-            
+
         Returns:
             Maybe[TwoSumResult]: Some(result) if found, Nothing if not found
         """
@@ -130,13 +127,13 @@ class TwoSumSolver:
     def count_pairs(self, nums: list[int], target: int) -> int:
         """
         Count the number of pairs that sum to the target.
-        
+
         Uses generator to avoid loading all results into memory.
-        
+
         Args:
             nums: List of integers to search
             target: Target sum value
-            
+
         Returns:
             Number of pairs found
         """
@@ -146,19 +143,16 @@ class TwoSumSolver:
         return count
 
     def solve_with_stack_safety(
-        self,
-        nums: list[int],
-        target: int,
-        max_results: int | None = None
+        self, nums: list[int], target: int, max_results: int | None = None
     ) -> Generator[TwoSumResult]:
         """
         Stack-safe solver that yields results lazily.
-        
+
         Args:
             nums: List of integers to search
             target: Target sum value
             max_results: Maximum number of results to return (optional)
-            
+
         Yields:
             TwoSumResult: Results as they are found
         """

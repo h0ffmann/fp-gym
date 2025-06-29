@@ -6,7 +6,6 @@ This script showcases the generator-based, stack-safe two sum solver
 with a simple example case.
 """
 
-
 from returns.maybe import Nothing, Some
 
 from fp_gym import TwoSumSolver, two_sum
