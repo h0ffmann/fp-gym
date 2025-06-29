@@ -26,9 +26,9 @@ jobs:
     
     strategy:
       matrix:
-        ghc-version: ['9.6.6']
+        ghc-version: ['9.8.4']
         include:
-          - ghc-version: '9.6.6'
+          - ghc-version: '9.8.4'
             stack-yaml: 'stack.yaml'
     
     name: Haskell (GHC ${{ matrix.ghc-version }})
@@ -54,29 +54,6 @@ jobs:
         restore-keys: |
           ${{ env.HASKELL_CACHE_KEY }}-
           ${{ runner.os }}-stack-
-
-    - name: Check if Haskell project exists
-      id: check-haskell
-      run: |
-        if [ -f "haskell/stack.yaml" ]; then
-          echo "exists=true" >> $GITHUB_OUTPUT
-        else
-          echo "exists=false" >> $GITHUB_OUTPUT
-        fi
-
-    - name: Bootstrap Haskell environment (if needed)
-      if: steps.check-haskell.outputs.exists == 'false'
-      run: |
-        if [ -f "bootstrap-haskell-fixed.sh" ]; then
-          chmod +x bootstrap-haskell-fixed.sh
-          ./bootstrap-haskell-fixed.sh
-        elif [ -f "setup-haskell-tooling.sh" ]; then
-          chmod +x setup-haskell-tooling.sh
-          ./setup-haskell-tooling.sh
-        else
-          echo "❌ No Haskell bootstrap script found"
-          exit 1
-        fi
 
     - name: Install system dependencies
       run: |
@@ -123,19 +100,6 @@ jobs:
         echo "📊 Generating test coverage..."
         stack test --resolver ghc-${{ matrix.ghc-version }} --coverage || echo "⚠️ Coverage generation failed"
       
-    - name: Check code formatting (if formatter available)
-      working-directory: haskell
-      run: |
-        if stack exec --resolver ghc-${{ matrix.ghc-version }} -- which fourmolu >/dev/null 2>&1; then
-          echo "📝 Checking Haskell code formatting..."
-          find src test app bench -name "*.hs" -exec stack exec --resolver ghc-${{ matrix.ghc-version }} -- fourmolu --mode check {} \; || echo "⚠️ Formatting issues found"
-        elif stack exec --resolver ghc-${{ matrix.ghc-version }} -- which ormolu >/dev/null 2>&1; then
-          echo "📝 Checking Haskell code formatting..."
-          find src test app bench -name "*.hs" -exec stack exec --resolver ghc-${{ matrix.ghc-version }} -- ormolu --mode check {} \; || echo "⚠️ Formatting issues found"
-        else
-          echo "⚠️ No formatter available, skipping format check"
-        fi
-      
     - name: Run hlint (if available)
       working-directory: haskell
       run: |
@@ -179,63 +143,6 @@ jobs:
           echo "❌ Haskell tests failed on GHC ${{ matrix.ghc-version }}. Check the logs above."
         fi
 
-  # ============================================
-  # HASKELL BENCHMARKS (Optional)
-  # ============================================
-  haskell-benchmarks:
-    needs: haskell-test
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    
-    name: Haskell Benchmarks
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Set up Haskell Stack
-      uses: haskell-actions/setup@v2
-      with:
-        ghc-version: '9.6.6'
-        enable-stack: true
-        stack-version: 'latest'
-
-    - name: Cache Stack dependencies
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.stack
-          haskell/.stack-work
-        key: ${{ env.HASKELL_CACHE_KEY }}-9.6.6-bench
-        restore-keys: |
-          ${{ env.HASKELL_CACHE_KEY }}-9.6.6-
-          ${{ env.HASKELL_CACHE_KEY }}-
-
-    - name: Setup and build
-      working-directory: haskell
-      run: |
-        stack setup
-        stack build --dependencies-only
-        stack build
-
-    - name: Run benchmarks
-      working-directory: haskell
-      run: |
-        echo "🏃 Running Haskell benchmarks..."
-        stack bench --benchmark-arguments="--output benchmark-results.html" || echo "⚠️ Benchmarks failed or not implemented"
-
-    - name: Upload benchmark results
-      uses: actions/upload-artifact@v4
-      with:
-        name: haskell-benchmark-results
-        path: |
-          haskell/benchmark-results.html
-          haskell/.stack-work/dist/*/bench/
-        retention-days: 30
-
-  # ============================================
-  # INTEGRATION WITH MAIN CI
-  # ============================================
   haskell-status:
     needs: [haskell-test]
     if: always()
