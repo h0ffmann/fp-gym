@@ -1,7 +1,7 @@
 """Tests for the two sum implementation."""
 
 import pytest
-from returns.maybe import Maybe, Nothing, Some
+from returns.maybe import Nothing, Some
 
 from src.fp_gym import TwoSumSolver, two_sum, two_sum_generator
 from src.fp_gym.solver import TwoSumResult

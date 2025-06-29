@@ -36,6 +36,11 @@ lint.select = [
     "UP",  # pyupgrade
 ]
 lint.ignore = ["W293"]
+exclude = [
+    "tests",
+    "test_*.py",
+    "*_test.py",
+]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -63,6 +68,12 @@ strict_optional = true
 strict_equality = true
 local_partial_types = true
 implicit_reexport = false
+mypy_path = "src"
+explicit_package_bases = true
+exclude = [
+    "tests/",
+    "test_.*\\.py$",
+]
 
 # Handle the returns library compatibility issues
 [[tool.mypy.overrides]]

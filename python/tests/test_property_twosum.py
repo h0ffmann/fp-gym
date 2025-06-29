@@ -1,7 +1,9 @@
 """Property-based tests for two sum implementation using Hypothesis."""
 
 import random
-from hypothesis import given, strategies as st, assume, example, note
+
+from hypothesis import assume, example, given
+from hypothesis import strategies as st
 from hypothesis.strategies import composite
 from returns.maybe import Nothing, Some
 
@@ -28,7 +30,7 @@ def list_with_valid_target(draw):
     return nums, target
 
 
-@composite 
+@composite
 def list_with_no_solution(draw):
     """Generate a list and target with no valid solution."""
     nums = draw(st.lists(
@@ -73,7 +75,7 @@ class TestTwoSumProperties:
             # Correctness
             assert sum(result.values) == target
             
-            # Index validity  
+            # Index validity
             i, j = result.indices
             assert 0 <= i < len(nums)
             assert 0 <= j < len(nums)

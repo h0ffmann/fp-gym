@@ -31,14 +31,14 @@ def main() -> None:
 
     # Demonstrate different solving approaches
     print("🔍 Finding first pair using Maybe monad:")
-    result = two_sum(nums, target)
+    maybe_result = two_sum(nums, target)
 
-    if isinstance(result, Some):
-        unwrapped = result.unwrap()
+    if isinstance(maybe_result, Some):
+        unwrapped = maybe_result.unwrap()
         print(f"   ✅ Found pair at indices {unwrapped.indices}")
         print(f"   📝 Values: {unwrapped.values}")
         print(f"   ➕ Sum: {sum(unwrapped.values)}")
-    elif isinstance(result, Nothing):
+    elif maybe_result is Nothing:  # Fix: Use 'is Nothing' instead of isinstance
         print("   ❌ No solution found")
 
     print()
@@ -75,9 +75,10 @@ def main() -> None:
     )
 
     if stack_safe_results:
-        result = stack_safe_results[0]
-        print(f"   ✅ Found pair: indices {result.indices}, values {result.values}")
-        print(f"   🧮 Sum verification: {sum(result.values)} == {large_target}")
+        # Fix: Use different variable name to avoid type confusion
+        first_result = stack_safe_results[0]
+        print(f"   ✅ Found pair: indices {first_result.indices}, values {first_result.values}")
+        print(f"   🧮 Sum verification: {sum(first_result.values)} == {large_target}")
     else:
         print("   ❌ No solution found in large dataset")
 
