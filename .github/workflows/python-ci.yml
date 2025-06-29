@@ -55,8 +55,8 @@ jobs:
     - name: Install project dependencies
       run: |
         uv add returns==0.25.0
-        uv add --dev pytest pytest-cov mypy ruff
-    
+        uv add --dev pytest pytest-cov mypy ruff pytest-html
+
     - name: Compile project
       run: |
         uv run python -m py_compile src/main.py

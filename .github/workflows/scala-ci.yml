@@ -4,9 +4,15 @@ name: Scala CI
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'src/**'
+      - 'build.sbt'
+
   pull_request:
     branches: [ main ]
-
+    paths:
+      - 'src/**'
+      - 'build.sbt'
 jobs:
   test:
     runs-on: ubuntu-latest
