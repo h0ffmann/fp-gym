@@ -1,17 +1,10 @@
-# .github/workflows/haskell-ci.yml
 name: Haskell CI
 
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'haskell/**'
-      - '.github/workflows/haskell-ci.yml'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'haskell/**'
-      - '.github/workflows/haskell-ci.yml'
 
 env:
   # Cache key for Haskell dependencies
