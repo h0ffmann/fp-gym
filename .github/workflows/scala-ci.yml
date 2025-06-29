@@ -82,3 +82,33 @@ jobs:
         else
           echo "❌ Some tests failed. Check the logs above."
         fi
+
+  scala-status:
+    needs: [test]
+    if: always()
+    runs-on: ubuntu-latest
+    
+    name: Scala CI Status
+    
+    steps:
+    - name: Check Scala CI status
+      run: |
+        echo "📊 Scala CI Results:"
+        echo "====================="
+        
+        if [ "${{ needs.test.result }}" == "success" ]; then
+          echo "✅ Scala tests: PASSED"
+        else
+          echo "❌ Scala tests: FAILED"
+          OVERALL_FAILED=true
+        fi
+        
+        echo "====================="
+        
+        if [ "$OVERALL_FAILED" == "true" ]; then
+          echo "❌ Scala CI FAILED"
+          exit 1
+        else
+          echo "✅ Scala CI PASSED"
+          echo "🎉 All Scala checks completed successfully!"
+        fi

@@ -53,49 +53,49 @@ jobs:
     - name: Setup GHC and Stack
       working-directory: haskell
       run: |
-        stack setup --resolver ghc-${{ matrix.ghc-version }}
+        stack setup
         stack --version
         stack ghc -- --version
 
     - name: Install dependencies
       working-directory: haskell
       run: |
-        stack build --resolver ghc-${{ matrix.ghc-version }} --dependencies-only
+        stack build --dependencies-only
       
     - name: Build Haskell project
       working-directory: haskell
       run: |
-        stack build --resolver ghc-${{ matrix.ghc-version }}
+        stack build
       
     - name: Run Haskell tests
       working-directory: haskell
       run: |
-        stack test --resolver ghc-${{ matrix.ghc-version }}
+        stack test
       
     - name: Run unit tests specifically
       working-directory: haskell
       run: |
         echo "🧪 Running unit tests..."
-        stack test --resolver ghc-${{ matrix.ghc-version }} --test-arguments="--match='TwoSumSpec'"
+        stack test --test-arguments="--match='TwoSumSpec'"
       
     - name: Run property tests specifically
       working-directory: haskell
       run: |
         echo "🧪 Running property tests..."
-        stack test --resolver ghc-${{ matrix.ghc-version }} --test-arguments="--match='Properties'" || echo "⚠️ Property tests not yet implemented"
+        stack test --test-arguments="--match='Properties'" || echo "⚠️ Property tests not yet implemented"
       
     - name: Generate test coverage
       working-directory: haskell
       run: |
         echo "📊 Generating test coverage..."
-        stack test --resolver ghc-${{ matrix.ghc-version }} --coverage || echo "⚠️ Coverage generation failed"
+        stack test --coverage || echo "⚠️ Coverage generation failed"
       
     - name: Run hlint (if available)
       working-directory: haskell
       run: |
-        if stack exec --resolver ghc-${{ matrix.ghc-version }} -- which hlint >/dev/null 2>&1; then
+        if stack exec -- which hlint >/dev/null 2>&1; then
           echo "🔍 Running hlint..."
-          stack exec --resolver ghc-${{ matrix.ghc-version }} -- hlint src test app bench || echo "⚠️ Hlint suggestions found"
+          stack exec -- hlint src test app bench || echo "⚠️ Hlint suggestions found"
         else
           echo "⚠️ Hlint not available, skipping lint check"
         fi
@@ -104,14 +104,14 @@ jobs:
       working-directory: haskell
       run: |
         echo "📚 Generating documentation..."
-        stack haddock --resolver ghc-${{ matrix.ghc-version }} || echo "⚠️ Documentation generation failed"
+        stack haddock || echo "⚠️ Documentation generation failed"
       if: matrix.ghc-version == '9.8.4'  # Only generate docs for the GHC version we're using
       
     - name: Test executable
       working-directory: haskell
       run: |
         echo "🎯 Testing executable..."
-        stack exec --resolver ghc-${{ matrix.ghc-version }} fp-gym-haskell-exe || echo "⚠️ Executable test failed"
+        stack exec fp-gym-haskell-exe || echo "⚠️ Executable test failed"
       
     - name: Upload test results
       uses: actions/upload-artifact@v4
