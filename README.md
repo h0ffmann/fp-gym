@@ -1,8 +1,9 @@
 # FP-Gym: A Scala 3 Functional Programming Playground
 
-[![Scala CI](https://github.com/h0ffmann/fp-gym/actions/workflows/test.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/scala-ci.yml)
+[![Scala CI](https://github.com/h0ffmann/fp-gym/actions/workflows/scala-ci.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/scala-ci.yml)
 [![Haskell CI](https://github.com/h0ffmann/fp-gym/actions/workflows/haskell-ci.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/haskell-ci.yml)
 [![Scala Version](https://img.shields.io/badge/scala-3.7.1-blue.svg)](https://www.scala-lang.org/)
+[![GHC Version](https://img.shields.io/badge/ghc-9.8.6-purple.svg)](https://www.haskell.org/ghc/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Welcome to FP-Gym! This repository is a personal collection of solutions to common programming problems and data structure challenges, implemented with a functional-first approach using **Scala 3**. The goal is to practice and demonstrate core FP concepts like immutability, recursion, higher-order functions, and type safety.
