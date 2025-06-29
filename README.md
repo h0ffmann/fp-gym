@@ -1,6 +1,7 @@
 # FP-Gym: A Scala 3 Functional Programming Playground
 
-[![CI](https://github.com/h0ffmann/fp-gym/actions/workflows/test.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/test.yml)
+[![Scala CI](https://github.com/h0ffmann/fp-gym/actions/workflows/test.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/scala-ci.yml)
+[![Haskell CI](https://github.com/h0ffmann/fp-gym/actions/workflows/haskell-ci.yml/badge.svg)](https://github.com/h0ffmann/fp-gym/actions/workflows/haskell-ci.yml)
 [![Scala Version](https://img.shields.io/badge/scala-3.7.1-blue.svg)](https://www.scala-lang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
