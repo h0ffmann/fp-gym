@@ -1,0 +1,69 @@
+cabal-version:       2.4
+name:                fp-gym-haskell
+version:             0.1.0.0
+synopsis:            Functional Programming Gym - Haskell Solutions
+description:         A collection of algorithmic solutions implemented in modern Haskell
+homepage:            https://github.com/h0ffmann/fp-gym
+license:             MIT
+author:              Your Name
+maintainer:          your.email@example.com
+copyright:           2025 Your Name
+category:            Algorithms
+build-type:          Simple
+extra-source-files:  README.md
+
+library
+  exposed-modules:     
+    FpGym.TwoSum
+    FpGym.Common.Solution
+  other-modules:       
+  hs-source-dirs:      src
+  build-depends:       
+    base >= 4.14 && < 5,
+    containers >= 0.6.2,
+    vector >= 0.12
+  default-language:    Haskell2010
+  ghc-options:         -Wall
+
+executable fp-gym-haskell-exe
+  main-is:             Main.hs
+  other-modules:       
+  hs-source-dirs:      app
+  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       
+    base,
+    fp-gym-haskell,
+    vector >= 0.12
+  default-language:    Haskell2010
+
+test-suite fp-gym-haskell-test
+  type:                exitcode-stdio-1.0
+  main-is:             Spec.hs
+  other-modules:       
+    FpGym.TwoSumSpec
+    FpGym.TwoSumProperties
+  hs-source-dirs:      test
+  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       
+    base,
+    fp-gym-haskell,
+    hspec >= 2.7,
+    QuickCheck >= 2.14,
+    hspec-discover >= 2.7,
+    containers,
+    vector
+  default-language:    Haskell2010
+
+benchmark fp-gym-haskell-bench
+  type:                exitcode-stdio-1.0
+  main-is:             Main.hs
+  other-modules:       
+    FpGym.TwoSumBench
+  hs-source-dirs:      bench
+  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       
+    base,
+    fp-gym-haskell,
+    criterion >= 1.5,
+    vector
+  default-language:    Haskell2010

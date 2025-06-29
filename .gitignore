@@ -31,3 +31,11 @@ metals.sbt
 .idea_modules
 /.worksheet/
 repomix-output.xml
+# Haskell
+haskell/.stack-work/
+haskell/dist/
+haskell/dist-newstyle/
+haskell/cabal.project.local
+haskell/*.hi
+haskell/*.o
+haskell/.ghc.*

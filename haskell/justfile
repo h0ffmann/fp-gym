@@ -1,0 +1,294 @@
+# Justfile for fp-gym Haskell project
+# Usage: just <command>
+# Run from the haskell/ directory
+
+# Default recipe - show available commands
+default:
+    @just --list
+
+# ============================================
+# CORE DEVELOPMENT COMMANDS
+# ============================================
+
+# Setup GHC and install dependencies
+setup:
+    stack setup
+    stack build --dependencies-only
+
+# Build the project
+build:
+    stack build
+
+# Build with verbose output
+build-verbose:
+    stack build --verbose
+
+# Clean build artifacts
+clean:
+    stack clean
+
+# Full clean and rebuild
+rebuild: clean build
+
+# ============================================
+# TESTING COMMANDS
+# ============================================
+
+# Run all tests
+test:
+    stack test
+
+# Run tests with verbose output
+test-verbose:
+    stack test --verbose
+
+# Run tests in watch mode (rerun on file changes)
+test-watch:
+    stack test --file-watch
+
+# Run only unit tests
+test-unit:
+    stack test --test-arguments="--match='TwoSumSpec'"
+
+# Run only property tests
+test-property:
+    stack test --test-arguments="--match='Properties'"
+
+# Run specific test suite
+test-suite name:
+    stack test --test-arguments="--match='{{name}}'"
+
+# Generate test coverage report
+coverage:
+    stack test --coverage
+
+# ============================================
+# CODE QUALITY & FORMATTING
+# ============================================
+
+# Format Haskell code (requires fourmolu or ormolu)
+format:
+    @if command -v fourmolu >/dev/null 2>&1; then \
+        echo "🎨 Formatting with fourmolu..."; \
+        find src test app bench -name "*.hs" -exec fourmolu --mode inplace {} \; ; \
+    elif command -v ormolu >/dev/null 2>&1; then \
+        echo "🎨 Formatting with ormolu..."; \
+        find src test app bench -name "*.hs" -exec ormolu --mode inplace {} \; ; \
+    else \
+        echo "⚠️  No formatter found. Install with: stack install fourmolu"; \
+    fi
+
+# Check code formatting
+format-check:
+    @if command -v fourmolu >/dev/null 2>&1; then \
+        echo "🔍 Checking format with fourmolu..."; \
+        find src test app bench -name "*.hs" -exec fourmolu --mode check {} \; ; \
+    elif command -v ormolu >/dev/null 2>&1; then \
+        echo "🔍 Checking format with ormolu..."; \
+        find src test app bench -name "*.hs" -exec ormolu --mode check {} \; ; \
+    else \
+        echo "⚠️  No formatter found. Install with: stack install fourmolu"; \
+    fi
+
+# Run hlint on source code
+lint:
+    @if command -v hlint >/dev/null 2>&1; then \
+        echo "🔍 Running hlint..."; \
+        hlint src test app bench; \
+    else \
+        echo "⚠️  hlint not found. Install with: stack install hlint"; \
+    fi
+
+# ============================================
+# DEVELOPMENT WORKFLOW
+# ============================================
+
+# Type check without building
+check:
+    stack build --fast --no-run-tests --no-run-benchmarks
+
+# Full development check: build + test + format check + lint
+check-all: build test format-check lint
+    @echo "✅ All checks passed!"
+
+# Quick development loop: format + build + test
+fix: format build test
+    @echo "✅ Code formatted, built, and tested!"
+
+# Development watch mode: auto-rebuild and test on changes
+dev:
+    @echo "🔄 Starting development loop (Ctrl+C to stop)..."
+    stack test --file-watch
+
+# ============================================
+# EXECUTION COMMANDS
+# ============================================
+
+# Run the main executable
+run:
+    stack exec fp-gym-haskell-exe
+
+# Run with runtime profiling
+run-prof:
+    stack exec fp-gym-haskell-exe -- +RTS -p
+
+# Run benchmarks
+bench:
+    stack bench
+
+# Run benchmarks with detailed output
+bench-verbose:
+    stack bench --benchmark-arguments="--output benchmark-results.html"
+
+# ============================================
+# REPL & DEVELOPMENT
+# ============================================
+
+# Start GHCi REPL
+repl:
+    stack ghci
+
+# Start REPL with specific module loaded
+repl-module module:
+    stack ghci --ghci-options "-e ':l {{module}}'"
+
+# Start REPL for library development
+repl-lib:
+    stack ghci fp-gym-haskell:lib
+
+# Start REPL for test development
+repl-test:
+    stack ghci fp-gym-haskell:test:fp-gym-haskell-test
+
+# ============================================
+# DOCUMENTATION
+# ============================================
+
+# Generate Haddock documentation
+docs:
+    stack haddock
+
+# Generate and open documentation
+docs-open:
+    stack haddock --open
+
+# ============================================
+# DEPENDENCY MANAGEMENT
+# ============================================
+
+# Update package index
+update:
+    stack update
+
+# Show dependency tree
+deps:
+    stack ls dependencies
+
+# Show outdated dependencies
+deps-outdated:
+    stack list-dependencies --depth 1 | head -20
+
+# ============================================
+# DEBUGGING & PROFILING
+# ============================================
+
+# Build with profiling enabled
+build-prof:
+    stack build --profile
+
+# Run executable with heap profiling
+profile-heap:
+    stack exec --profile -- fp-gym-haskell-exe +RTS -h
+
+# Run executable with time profiling
+profile-time:
+    stack exec --profile -- fp-gym-haskell-exe +RTS -p
+
+# ============================================
+# INSTALLATION & TOOLS
+# ============================================
+
+# Install commonly used Haskell tools
+install-tools:
+    @echo "🔧 Installing Haskell development tools..."
+    stack install fourmolu hlint haskell-language-server
+
+# Install project executables globally
+install:
+    stack install
+
+# ============================================
+# CI/CD SIMULATION
+# ============================================
+
+# Run the same checks as CI
+ci: clean setup build test format-check lint docs
+    @echo "🚀 CI simulation completed successfully!"
+
+# Pre-commit checks
+pre-commit: format check-all
+    @echo "✅ Ready to commit!"
+
+# ============================================
+# PROJECT INFO
+# ============================================
+
+# Show Stack and GHC versions
+versions:
+    @echo "Stack version:"
+    @stack --version
+    @echo "GHC version:"
+    @stack ghc -- --version
+
+# Show project info
+info:
+    stack ls locals
+
+# Show snapshot info
+snapshot:
+    stack ls snapshots local
+
+# ============================================
+# HELP & DOCUMENTATION
+# ============================================
+
+# Show detailed help for all commands
+help:
+    @echo "fp-gym Haskell Development Commands"
+    @echo "==================================="
+    @echo ""
+    @echo "🔧 Core Development:"
+    @echo "  setup        - Install GHC and dependencies"
+    @echo "  build        - Build the project"
+    @echo "  test         - Run all tests"
+    @echo "  clean        - Clean build artifacts"
+    @echo ""
+    @echo "✨ Code Quality:"
+    @echo "  format       - Format Haskell code"
+    @echo "  format-check - Check code formatting"
+    @echo "  lint         - Run hlint"
+    @echo "  check-all    - Full validation"
+    @echo ""
+    @echo "🧪 Testing:"
+    @echo "  test-unit    - Run unit tests only"
+    @echo "  test-property- Run property tests only"
+    @echo "  test-watch   - Watch mode testing"
+    @echo "  coverage     - Generate coverage report"
+    @echo ""
+    @echo "🚀 Development:"
+    @echo "  dev          - Development watch mode"
+    @echo "  repl         - Start GHCi REPL"
+    @echo "  run          - Run executable"
+    @echo "  bench        - Run benchmarks"
+    @echo ""
+    @echo "📚 Documentation:"
+    @echo "  docs         - Generate Haddock docs"
+    @echo "  docs-open    - Generate and open docs"
+    @echo ""
+    @echo "🔧 Tools:"
+    @echo "  install-tools- Install dev tools"
+    @echo "  versions     - Show versions"
+    @echo "  ci           - Run CI simulation"
+    @echo ""
+    @echo "Use 'just <command>' to run any command."
+    @echo "Example: just build"
