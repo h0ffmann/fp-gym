@@ -60,12 +60,22 @@ jobs:
     - name: Check code formatting
       run: sbt scalafmtCheckAll
       
-    - name: Run scalafmt if needed
-      if: failure()
+    - name: Check code formatting
       run: |
-        sbt scalafmtAll
-        echo "❌ Code formatting issues found. Run 'sbt scalafmtAll' locally."
-        exit 1
+        echo "Checking code formatting..."
+        if ! sbt scalafmtCheckAll; then
+          echo "❌ Code formatting check failed"
+          echo "Files that need formatting:"
+          sbt scalafmtCheck || true
+          sbt Test/scalafmtCheck || true
+          echo "Running scalafmt to show diff..."
+          git status
+          sbt scalafmtAll
+          git diff --name-only
+          echo "Please run 'sbt scalafmtAll' locally and commit the changes"
+          exit 1
+        fi
+        echo "✅ Code formatting check passe
     
     - name: Generate test report
       run: sbt "testOnly * -- --reporter munit.HtmlReporter"
