@@ -9,7 +9,7 @@ default:
 # 3.13 support on nix using flakes + FHS
 nix-pydev:
     devshell
-    python-dev
+    py313
 
 # Install dependencies and set up development environment
 setup:

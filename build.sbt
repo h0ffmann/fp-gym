@@ -18,5 +18,11 @@ lazy val root = project
     // Scalafmt settings
     scalafmtOnCompile := true,
 
-    libraryDependencies += "org.scalameta" %% "munit" % "1.0.4" % Test
+    libraryDependencies ++= Seq(
+      "org.scalameta" %% "munit" % "1.0.4" % Test,
+      "org.scalacheck" %% "scalacheck" % "1.18.1" % Test,
+      "org.scalameta" %% "munit-scalacheck" % "1.0.0" % Test
+    )
+
+    
   )

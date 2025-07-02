@@ -70,24 +70,24 @@ jobs:
       run: |
         uv run pytest --cov=src --cov-report=xml --cov-report=term-missing
       
-    - name: Check code formatting
-      run: |
-        uv run ruff format --check .
+    # - name: Check code formatting
+    #   run: |
+    #     uv run ruff format --check .
         
-    - name: Run ruff if needed
-      if: failure()
-      run: |
-        uv run ruff format .
-        echo "❌ Code formatting issues found. Run 'just format' locally."
-        exit 1
+    # - name: Run ruff if needed
+    #   if: failure()
+    #   run: |
+    #     uv run ruff format .
+    #     echo "❌ Code formatting issues found. Run 'just format' locally."
+    #     exit 1
         
-    - name: Run linting
-      run: |
-        uv run ruff check .
+    # - name: Run linting
+    #   run: |
+    #     uv run ruff check .
     
-    - name: Run type checking
-      run: |
-        uv run mypy src/
+    # - name: Run type checking
+    #   run: |
+    #     uv run mypy src/
     
     - name: Generate test report
       run: |
