@@ -21,6 +21,7 @@ import scala.collection.mutable.{Set => MutSet}
 import scala.collection.immutable.Set
 
 extension (rl: List[Int])
+  // O (n) t,  O (n) space 
   def findMissingRepeat: (Int, Int) = {
     @tailrec
     def helper(
